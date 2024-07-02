@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect} from 'react';
+import Form from './components/Form';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUsers } from './store/services/formSlice';
 
 function App() {
+  const dispatch = useDispatch()
+  const users = useSelector(state => state.users.users)
+
+  useEffect(() => {
+    dispatch(fetchUsers())
+  }, [dispatch])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     <Form />
+
+     <div>
+        {users && users.map((user, index) => {
+          return (
+            <div key={index}>
+               <p>{user.email}</p>
+               <p>{user.name}</p>
+            </div>
+          )
+        })}
+     </div>
     </div>
   );
 }
