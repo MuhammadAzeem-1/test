@@ -34,6 +34,8 @@ const Form = () => {
   return (
     <>
       <div>
+      <h1>React Forms</h1>
+        <h2>This is Form to test the Redux Toolkit</h2>
         <form
           onSubmit={handleSubmit}
           style={{
