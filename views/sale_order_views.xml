@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit sale order form view to add total_weight field and warning banner -->
+    <record id="view_order_form_total_weight" model="ir.ui.view">
+        <field name="name">sale.order.form.total.weight</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Add warning banner at the top if weight exceeds 100 kg -->
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-warning text-center" 
+                     role="alert" 
+                     invisible="total_weight &lt;= 100"
+                     style="margin-bottom: 0px;">
+                    <div class="row">
+                        <div class="col-12">
+                            <i class="fa fa-warning fa-2x" style="vertical-align: middle;"/>
+                            <strong style="font-size: 16px; margin-left: 10px;">
+                                HEAVY ORDER WARNING
+                            </strong>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <span style="font-size: 14px;">
+                                This order has a total weight of 
+                                <strong><field name="total_weight" readonly="1"/> kg</strong>, 
+                                which exceeds the 100 kg threshold.
+                                <br/>
+                                Special shipping arrangements may be required.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+
+            <!-- Add total_weight field in the order information section -->
+            <xpath expr="//field[@name='validity_date']" position="after">
+                <field name="total_weight" 
+                       readonly="1"
+                       decoration-danger="total_weight &gt; 100"
+                       widget="float"/>
+                <field name="is_heavy_order" invisible="1"/>
+            </xpath>
+
+            <!-- Add line_weight to order lines tree view -->
+            <xpath expr="//field[@name='order_line']/tree//field[@name='product_uom_qty']" position="after">
+                <field name="line_weight" 
+                       string="Weight (kg)" 
+                       readonly="1"
+                       optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add total_weight to list view -->
+    <record id="view_quotation_tree_total_weight" model="ir.ui.view">
+        <field name="name">sale.order.tree.total.weight</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_total']" position="after">
+                <field name="total_weight" 
+                       string="Weight (kg)"
+                       decoration-danger="total_weight &gt; 100"
+                       optional="show"/>
+                <field name="is_heavy_order" 
+                       string="Heavy Order"
+                       widget="boolean"
+                       optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add heavy order filter to search view -->
+    <record id="view_sales_order_filter_weight" model="ir.ui.view">
+        <field name="name">sale.order.search.weight</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_quotation']" position="after">
+                <separator/>
+                <filter name="heavy_orders" 
+                        string="Heavy Orders (&gt;100 kg)" 
+                        domain="[('is_heavy_order', '=', True)]"
+                        help="Show orders exceeding 100 kg weight"/>
+                <filter name="light_orders" 
+                        string="Light Orders (≤100 kg)" 
+                        domain="[('is_heavy_order', '=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Optional: Add to kanban view -->
+    <record id="view_sale_order_kanban_weight" model="ir.ui.view">
+        <field name="name">sale.order.kanban.weight</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sale_order_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="total_weight"/>
+                <field name="is_heavy_order"/>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_kanban_bottom_right')]" position="inside">
+                <div invisible="not is_heavy_order">
+                    <span class="badge rounded-pill text-bg-warning">
+                        <i class="fa fa-warning"/> <field name="total_weight"/> kg
+                    </span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
