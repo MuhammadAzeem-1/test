@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit sale order form view to add priority field -->
+    <record id="view_order_form_priority" model="ir.ui.view">
+        <field name="name">sale.order.form.priority</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Add priority field below partner_id (customer field) -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="priority" 
+                       widget="priority"
+                       readonly="not user_has_groups('sales_team.group_sale_manager')"
+                       options="{'autosave': False}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit sale order list view to add priority column -->
+    <record id="view_quotation_tree_priority" model="ir.ui.view">
+        <field name="name">sale.order.tree.priority</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <!-- Add priority field after name column -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="priority" widget="priority" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit sale order search view to add high priority filter -->
+    <record id="view_sales_order_filter_priority" model="ir.ui.view">
+        <field name="name">sale.order.search.priority</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <!-- Add high priority filter after existing filters -->
+            <xpath expr="//filter[@name='my_quotation']" position="after">
+                <separator/>
+                <filter name="high_priority" 
+                        string="High Priority" 
+                        domain="[('priority', '=', 'high')]"
+                        help="Show only high priority orders"/>
+                <filter name="medium_priority" 
+                        string="Medium Priority" 
+                        domain="[('priority', '=', 'medium')]"/>
+                <filter name="low_priority" 
+                        string="Low Priority" 
+                        domain="[('priority', '=', 'low')]"/>
+            </xpath>
+            
+            <!-- Add priority to group by options -->
+            <xpath expr="//filter[@name='salesperson']" position="after">
+                <filter name="priority_group" 
+                        string="Priority" 
+                        context="{'group_by': 'priority'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Optional: Add priority to kanban view if needed -->
+    <record id="view_sale_order_kanban_priority" model="ir.ui.view">
+        <field name="name">sale.order.kanban.priority</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sale_order_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="priority" widget="priority" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

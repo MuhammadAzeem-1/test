@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sale Order Priority Management</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #875a7b;
+            border-bottom: 3px solid #875a7b;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #666;
+            margin-top: 30px;
+        }
+        .feature {
+            background: #f9f9f9;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #875a7b;
+            border-radius: 4px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        .badge-high { background: #dc3545; color: white; }
+        .badge-medium { background: #ffc107; color: #333; }
+        .badge-low { background: #28a745; color: white; }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .screenshot {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 20px 0;
+            padding: 10px;
+            background: #fafafa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Sale Order Priority Management</h1>
+        
+        <p><strong>Version:</strong> 17.0.1.0.0</p>
+        <p><strong>Category:</strong> Sales / CRM</p>
+        <p><strong>Author:</strong> Muhammad Azeem</p>
+        
+        <h2>📋 Overview</h2>
+        <p>
+            This module adds a priority management system to Odoo sale orders, 
+            allowing your sales team to prioritize orders and focus on high-priority deals.
+        </p>
+        
+        <h2>✨ Features</h2>
+        
+        <div class="feature">
+            <h3>🎚️ Three Priority Levels</h3>
+            <p>Classify orders into:</p>
+            <ul>
+                <li><span class="badge badge-low">Low</span> - Standard orders</li>
+                <li><span class="badge badge-medium">Medium</span> - Regular priority (default)</li>
+                <li><span class="badge badge-high">High</span> - Urgent orders requiring immediate attention</li>
+            </ul>
+        </div>
+        
+        <div class="feature">
+            <h3>📍 Smart Positioning</h3>
+            <p>Priority field appears directly below the customer field in the form view, 
+            making it immediately visible when viewing or editing orders.</p>
+        </div>
+        
+        <div class="feature">
+            <h3>🔍 Quick Filters</h3>
+            <p>Added filters in list view to quickly show:</p>
+            <ul>
+                <li>High Priority orders only</li>
+                <li>Medium Priority orders</li>
+                <li>Low Priority orders</li>
+                <li>Group by Priority</li>
+            </ul>
+        </div>
+        
+        <div class="feature">
+            <h3>🔒 Manager-Only Editing</h3>
+            <p>Only users with <strong>Sales Manager</strong> role can edit the priority field. 
+            Regular salespeople can view but not modify priorities, ensuring consistent 
+            prioritization across the team.</p>
+        </div>
+        
+        <div class="feature">
+            <h3>📊 Visual Priority Widget</h3>
+            <p>Uses Odoo's built-in priority widget with star icons for intuitive visual representation.</p>
+        </div>
+        
+        <div class="feature">
+            <h3>📝 Change Tracking</h3>
+            <p>All priority changes are logged in the chatter, creating an audit trail.</p>
+        </div>
+        
+        <div class="feature">
+            <h3>⚠️ High Priority Alert</h3>
+            <p>Automatic warning notification when an order is marked as high priority.</p>
+        </div>
+        
+        <h2>🚀 Installation</h2>
+        <ol>
+            <li>Download the module</li>
+            <li>Upload to your Odoo instance or place in <code>addons/</code> directory</li>
+            <li>Update Apps List</li>
+            <li>Search for "Sale Order Priority Management"</li>
+            <li>Click <strong>Install</strong></li>
+        </ol>
+        
+        <h2>💡 Usage</h2>
+        
+        <h3>For Sales Managers:</h3>
+        <ol>
+            <li>Open any Sale Order</li>
+            <li>Click the priority stars below the customer field</li>
+            <li>Select appropriate priority level</li>
+            <li>Save the order</li>
+        </ol>
+        
+        <h3>For Sales Team:</h3>
+        <ol>
+            <li>Go to <strong>Sales → Orders</strong></li>
+            <li>Click <strong>Filters → High Priority</strong> to see urgent orders</li>
+            <li>Focus on high-priority orders first</li>
+            <li>Use <strong>Group By → Priority</strong> to organize your pipeline</li>
+        </ol>
+        
+        <h2>🎯 Use Cases</h2>
+        <ul>
+            <li><strong>VIP Customers:</strong> Mark orders from important clients as high priority</li>
+            <li><strong>Urgent Deliveries:</strong> Flag rush orders requiring immediate processing</li>
+            <li><strong>Large Deals:</strong> Prioritize high-value opportunities</li>
+            <li><strong>Escalated Issues:</strong> Mark orders with customer complaints as high priority</li>
+            <li><strong>Seasonal Peaks:</strong> Manage workload during busy periods</li>
+        </ul>
+        
+        <h2>🔧 Technical Details</h2>
+        <ul>
+            <li><strong>Odoo Version:</strong> 17.0 (compatible syntax)</li>
+            <li><strong>Dependencies:</strong> sale, sales_team</li>
+            <li><strong>Models Modified:</strong> sale.order (inherited)</li>
+            <li><strong>New Fields:</strong> priority (Selection)</li>
+            <li><strong>Security:</strong> Field-level readonly for non-managers</li>
+        </ul>
+        
+        <h2>📧 Support</h2>
+        <p>
+            For questions, bug reports, or feature requests:<br>
+            <strong>Email:</strong> mazeem182000@gmail.com<br>
+            <strong>GitHub:</strong> <a href="https://github.com/mazeem182000">github.com/mazeem182000</a>
+        </p>
+        
+        <h2>📄 License</h2>
+        <p>LGPL-3</p>
+        
+        <h2>🙏 Credits</h2>
+        <p>Developed by <strong>Muhammad Azeem</strong></p>
+        <p>Generated with OdooAI — Zero-Change Module Generation</p>
+    </div>
+</body>
+</html>
