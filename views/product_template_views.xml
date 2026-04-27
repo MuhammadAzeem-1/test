@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Make weight field more prominent in product form -->
+    <record id="product_template_form_view_weight" model="ir.ui.view">
+        <field name="name">product.template.form.weight</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Ensure weight field is visible and prominent -->
+            <xpath expr="//field[@name='weight']" position="attributes">
+                <attribute name="string">Weight (kg)</attribute>
+                <attribute name="help">Product weight in kilograms. Used for calculating total order weight.</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

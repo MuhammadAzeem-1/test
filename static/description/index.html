@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sale Order Total Weight</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        h1 {
+            color: #875a7b;
+            border-bottom: 4px solid #875a7b;
+            padding-bottom: 15px;
+            font-size: 32px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 35px;
+            border-left: 4px solid #875a7b;
+            padding-left: 15px;
+        }
+        .feature {
+            background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #875a7b;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .feature h3 {
+            margin-top: 0;
+            color: #875a7b;
+        }
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        .badge-warning { background: #ffc107; color: #333; }
+        .badge-danger { background: #dc3545; color: white; }
+        .badge-success { background: #28a745; color: white; }
+        code {
+            background: #f4f4f4;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #c7254e;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .alert-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+        .screenshot {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #fafafa;
+        }
+        ul {
+            line-height: 2;
+        }
+        .highlight {
+            background: #ffffcc;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .icon-large {
+            font-size: 48px;
+            color: #875a7b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <div class="icon-large">⚖️</div>
+            <h1>Sale Order Total Weight Management</h1>
+        </div>
+        
+        <p><strong>Version:</strong> 17.0.1.0.0</p>
+        <p><strong>Category:</strong> Sales / Logistics</p>
+        <p><strong>Author:</strong> Muhammad Azeem</p>
+        <p><strong>Email:</strong> mazeem182000@gmail.com</p>
+        
+        <h2>📋 Overview</h2>
+        <p>
+            This module provides comprehensive weight tracking for sale orders, helping logistics 
+            teams identify heavy shipments that require special handling. It automatically calculates 
+            total order weight, displays visual warnings, and logs heavy orders daily.
+        </p>
+        
+        <div class="alert alert-warning">
+            <strong>⚠️ Heavy Order Threshold:</strong> Orders exceeding 100 kg are automatically 
+            flagged as "heavy orders" and require special attention for shipping arrangements.
+        </div>
+        
+        <h2>✨ Key Features</h2>
+        
+        <div class="feature">
+            <h3>⚖️ Automatic Weight Calculation</h3>
+            <p>Computes total weight by multiplying each product's unit weight by its quantity:</p>
+            <code>total_weight = Σ (product.weight × quantity)</code>
+            <ul>
+                <li>Updates automatically when order lines change</li>
+                <li>Updates when product quantities change</li>
+                <li>Updates when product weights are modified</li>
+                <li>Stored for fast querying and reporting</li>
+            </ul>
+        </div>
+        
+        <div class="feature">
+            <h3>🚨 Visual Warning Banner</h3>
+            <p>Prominent warning banner appears at the top of the form view when weight exceeds 100 kg:</p>
+            <div style="background: #fff3cd; padding: 15px; border-radius: 6px; margin: 10px 0;">
+                <strong>⚠️ HEAVY ORDER WARNING</strong><br>
+                This order has a total weight of <strong>127.50 kg</strong>, which exceeds the 100 kg threshold.<br>
+                Special shipping arrangements may be required.
+            </div>
+        </div>
+        
+        <div class="feature">
+            <h3>📊 Enhanced Views</h3>
+            <ul>
+                <li><strong>Form View:</strong> Total weight displayed prominently below validity date</li>
+                <li><strong>List View:</strong> Weight column with red highlighting for heavy orders</li>
+                <li><strong>Kanban View:</strong> Badge indicator for heavy orders</li>
+                <li><strong>Order Lines:</strong> Individual line weights calculated and displayed</li>
+            </ul>
+        </div>
+        
+        <div class="feature">
+            <h3>🔍 Smart Filtering</h3>
+            <p>Quick filters in search view:</p>
+            <ul>
+                <li><span class="badge badge-danger">Heavy Orders (&gt;100 kg)</span></li>
+                <li><span class="badge badge-success">Light Orders (≤100 kg)</span></li>
+            </ul>
+        </div>
+        
+        <div class="feature">
+            <h3>⏰ Daily Cron Job</h3>
+            <p>Scheduled action runs daily at 8:00 AM to log all heavy orders:</p>
+            <ul>
+                <li>Scans all active orders (draft, sent, confirmed)</li>
+                <li>Identifies orders exceeding 100 kg</li>
+                <li>Logs detailed report to system logs</li>
+                <li>Includes: Order number, customer, weight, state, total amount</li>
+                <li>Configurable schedule and threshold</li>
+            </ul>
+            <div style="background: #f4f4f4; padding: 10px; border-radius: 4px; margin-top: 10px;">
+                <code style="color: #333;">
+                === DAILY HEAVY ORDERS REPORT ===<br>
+                Found 3 heavy orders (>100 kg) requiring attention:<br>
+                  • Order: SO001 | Customer: John Doe | Weight: 127.50 kg<br>
+                  • Order: SO004 | Customer: ABC Corp | Weight: 215.30 kg<br>
+                  • Order: SO007 | Customer: XYZ Ltd | Weight: 103.20 kg<br>
+                === END HEAVY ORDERS REPORT ===
+                </code>
+            </div>
+        </div>
+        
+        <div class="feature">
+            <h3>🔒 Access Control</h3>
+            <p>Advanced security rules:</p>
+            <ul>
+                <li><strong>Salespeople:</strong> Can view only their own heavy orders</li>
+                <li><strong>Managers:</strong> Can view all heavy orders across the team</li>
+                <li>Weight fields are computed and read-only (prevents manual editing)</li>
+                <li>Proper access rights for order and line models</li>
+            </ul>
+        </div>
+        
+        <h2>🚀 Installation</h2>
+        <ol>
+            <li>Download the module ZIP file</li>
+            <li>Go to <strong>Apps</strong> → Enable Developer Mode</li>
+            <li>Click <strong>Upload Module</strong> or place in <code>addons/</code> directory</li>
+            <li>Click <strong>Update Apps List</strong></li>
+            <li>Search for <strong>"Sale Order Total Weight"</strong></li>
+            <li>Click <strong>Install</strong></li>
+        </ol>
+        
+        <h2>💡 Usage Guide</h2>
+        
+        <h3>Setting Up Product Weights:</h3>
+        <ol>
+            <li>Go to <strong>Sales → Products → Products</strong></li>
+            <li>Open any product</li>
+            <li>Go to <strong>Inventory</strong> tab</li>
+            <li>Set <strong>Weight (kg)</strong> field (e.g., 15.50)</li>
+            <li>Save the product</li>
+        </ol>
+        
+        <h3>Viewing Order Weight:</h3>
+        <ol>
+            <li>Create or open a sale order</li>
+            <li>Add products with weight defined</li>
+            <li><strong>Total Weight</strong> field updates automatically</li>
+            <li>If weight &gt; 100 kg, warning banner appears</li>
+        </ol>
+        
+        <h3>Finding Heavy Orders:</h3>
+        <ol>
+            <li>Go to <strong>Sales → Orders</strong></li>
+            <li>Click <strong>Filters</strong></li>
+            <li>Select <strong>Heavy Orders (&gt;100 kg)</strong></li>
+            <li>View all orders requiring special handling</li>
+        </ol>
+        
+        <h3>Monitoring Daily Reports:</h3>
+        <ol>
+            <li>Go to <strong>Settings → Technical → Automation → Scheduled Actions</strong></li>
+            <li>Find <strong>"Log Heavy Orders Daily"</strong></li>
+            <li>Check <strong>Next Execution Date</strong> (default: daily at 8:00 AM)</li>
+            <li>View logs at <strong>Settings → Technical → Database Structure → Logging</strong></li>
+            <li>Or check server logs: <code>/var/log/odoo/odoo-server.log</code></li>
+        </ol>
+        
+        <h2>🎯 Use Cases</h2>
+        <ul>
+            <li><strong>Freight Planning:</strong> Identify orders requiring freight shipping vs. courier</li>
+            <li><strong>Warehouse Alerts:</strong> Notify warehouse of heavy orders needing forklifts</li>
+            <li><strong>Cost Estimation:</strong> Calculate shipping costs based on weight brackets</li>
+            <li><strong>Compliance:</strong> Track weight limits for regulatory compliance</li>
+            <li><strong>Resource Planning:</strong> Schedule appropriate vehicles and staff</li>
+            <li><strong>Customer Communication:</strong> Alert customers of extended delivery times</li>
+        </ul>
+        
+        <h2>🔧 Technical Details</h2>
+        
+        <h3>Computed Fields:</h3>
+        <ul>
+            <li><code>total_weight</code> — Float, stored, depends on order lines</li>
+            <li><code>is_heavy_order</code> — Boolean, stored, True if weight &gt; 100</li>
+            <li><code>line_weight</code> — Float on order lines, weight per line</li>
+        </ul>
+        
+        <h3>Dependencies:</h3>
+        <ul>
+            <li><code>@api.depends('order_line.product_id', 'order_line.product_uom_qty', 'order_line.product_id.weight')</code></li>
+            <li>Triggers recalculation on any related field change</li>
+        </ul>
+        
+        <h3>Cron Job Configuration:</h3>
+        <ul>
+            <li><strong>Interval:</strong> 1 day</li>
+            <li><strong>Next Call:</strong> Tomorrow at 8:00 AM</li>
+            <li><strong>Active:</strong> Yes</li>
+            <li><strong>Number of Calls:</strong> -1 (infinite)</li>
+        </ul>
+        
+        <h3>Performance:</h3>
+        <ul>
+            <li>Stored computed fields for fast queries</li>
+            <li>Indexed fields for efficient filtering</li>
+            <li>Optimized dependency tracking</li>
+            <li>Minimal overhead on order save</li>
+        </ul>
+        
+        <h2>🎨 Customization Options</h2>
+        
+        <h3>Change Weight Threshold:</h3>
+        <p>Edit <code>models/sale_order.py</code>:</p>
+        <code>order.is_heavy_order = order.total_weight > 150.0  # Change 100 to 150</code>
+        
+        <h3>Add Email Notification:</h3>
+        <p>Modify cron job to send emails:</p>
+        <code>
+template = self.env.ref('sale_order_total_weight.email_heavy_order_alert')<br>
+template.send_mail(order.id, force_send=True)
+        </code>
+        
+        <h3>Create Dashboard Widget:</h3>
+        <p>Add action to show heavy orders on dashboard:</p>
+        <code>&lt;menuitem id="menu_heavy_orders" name="Heavy Orders" parent="sale.sale_menu_root"/&gt;</code>
+        
+        <h2>🐛 Troubleshooting</h2>
+        
+        <h3>Weight not calculating?</h3>
+        <ul>
+            <li>Check that products have weight defined</li>
+            <li>Verify <code>product</code> module is installed</li>
+            <li>Force recalculation: Edit order → Save</li>
+        </ul>
+        
+        <h3>Warning banner not showing?</h3>
+        <ul>
+            <li>Clear browser cache</li>
+            <li>Check total_weight &gt; 100</li>
+            <li>Verify view inheritance is loaded</li>
+        </ul>
+        
+        <h3>Cron not running?</h3>
+        <ul>
+            <li>Check scheduled action is active</li>
+            <li>Verify cron worker is running: <code>--max-cron-threads=1</code></li>
+            <li>Check logs for errors</li>
+        </ul>
+        
+        <h2>📊 Version Compliance</h2>
+        <p>This module uses <strong>Odoo v17</strong> syntax throughout:</p>
+        <ul>
+            <li>✅ <code>&lt;list&gt;</code> tag (not <code>&lt;tree&gt;</code>)</li>
+            <li>✅ Inline <code>invisible=</code> attributes</li>
+            <li>✅ <code>decoration-danger=</code> for conditional styling</li>
+            <li>✅ Proper <code>@api.depends</code> with full paths</li>
+            <li>✅ <code>store=True</code> for performance</li>
+            <li>✅ v17 view inheritance patterns</li>
+        </ul>
+        
+        <h2>📧 Support</h2>
+        <p>
+            For questions, bug reports, or customization requests:<br>
+            <strong>Email:</strong> mazeem182000@gmail.com<br>
+            <strong>GitHub:</strong> <a href="https://github.com/mazeem182000">github.com/mazeem182000</a>
+        </p>
+        
+        <h2>📄 License</h2>
+        <p>LGPL-3</p>
+        
+        <h2>🙏 Credits</h2>
+        <p>Developed by <strong>Muhammad Azeem</strong></p>
+        <p>Generated with <strong>OdooAI v12</strong> — Zero-Change Module Generation</p>
+        
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: #f9f9f9; border-radius: 8px;">
+            <p style="color: #666; font-size: 14px;">
+                This module is production-ready and requires <strong>zero manual changes</strong> after installation.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
